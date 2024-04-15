@@ -1,0 +1,43 @@
+1.	Como um usuário do aplicativo eu quero procurar por alimentos filtrados por validade para que seja possível verificar o quão distante o alimento está do vencimento.
+Critério de Aceitação: 
+•	O alimento precisa ser perecível;
+•	A busca precisa ser feita por dia;
+•	Só é possível pesquisar alimentos vencidos se eles ficaram vencido dentro da semana atual;	
+
+2.	Como um usuário do aplicativo eu quero separar os alimentos em prateleiras para que seja possível organizar os alimentos da maneira que eu melhor entender.
+Critério de Aceitação:
+•	Não pode haver repetição de nomes das prateleiras;
+•	Mínimos de 3 caracteres para o nome da prateleira;
+•	Máximo de 20 itens por prateleiras;
+•	Não é possível apagar todas as prateleiras;
+
+
+3.	Como um usuário do aplicativo eu quero ser capaz de classificar um alimento como favorito para seja possível encontrar com maior facilidade os alimentos com maior consumo.
+Critério de Aceitação:
+•	Não pode haver repetição de alimentos na lista de favoritos;
+•	Poder alterar a ordem da lista como bem entender;
+•	Permitir a criação de apenas uma lista de favoritos;
+	
+
+4.	Como um usuário do aplicativo eu quero poder fazer um login no aplicativo para 
+Deixar salvo meu cadastro.
+Critério de Aceitação:
+•	A senha deve ter no mínimo 8 caracteres, entre eles no mínimo um número;
+•	O nome de usuário não pode estar sendo utilizado;
+•	O e-mail não pode estar vinculado à outra conta;
+•	O nome de usuário deve conter, pelo menos, 3 caracteres;
+•	O nome de usuário não pode conter caracteres especiais.
+
+5.	Como um PO do aplicativo eu quero   que o usuário seja capaz de compartilhar sua conta com outros dispositivos e terceiros para que o acesso seja utilizável por mais de uma pessoa.
+Critério de Aceitação:
+
+•	 O compartilhamento não pode exceder 5 contas;
+•	 As contas compartilhadas devem ter o mesmo endereço;
+•	 O compartilhamento deve ser feito via e-mail;
+•	 Uma pessoa deverá ser a administradora da conta compartilhada;
+•	 Para que o compartilhamento funcione, as contas devem estar sincronizadas.
+
+6.	Como PO do produto eu quero que o aplicativo seja utilizável por Windows, Android, Mac e Ios para que o alcance do aplicativo seja maior e mais acessível.
+Critério de Aceitação:	
+
+•	O aplicativo deve ser baixado direto da loja de aplicativos do sistema;
