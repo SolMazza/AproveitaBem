@@ -23,6 +23,14 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public Optional<Usuario> autenticar(String email, String senha) {
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+        if (usuario.isPresent() && passwordEncoder.matches(senha, usuario.get().getSenha())) {
+            return usuario;
+        }
+        return Optional.empty();
+    }
+
     public Usuario busca(String email) {
         Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
         return usuario.orElseThrow(() -> new RegistroNaoEncontrado("Email " + email + " não encontrado"));
