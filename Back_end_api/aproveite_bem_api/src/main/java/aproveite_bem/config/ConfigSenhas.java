@@ -1,7 +1,7 @@
-package Aproveite_bem_api.config;
+package aproveite_bem.config;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ConfigSenhas {

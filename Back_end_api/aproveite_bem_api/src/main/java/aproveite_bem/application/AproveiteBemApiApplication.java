@@ -1,4 +1,4 @@
-package aproveite_bem.aproveite_bem_api;
+package aproveite_bem.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

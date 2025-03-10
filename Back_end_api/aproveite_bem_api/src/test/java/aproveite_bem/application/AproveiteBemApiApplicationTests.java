@@ -1,4 +1,4 @@
-package aproveite_bem.aproveite_bem_api;
+package aproveite_bem.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,9 +1,8 @@
-package Aproveite_bem_api.service;
+package aproveite_bem.service;
 
-import Aproveite_bem_api.config.ConfigSenhas;
-import Aproveite_bem_api.exeption.RegistroNaoEncontrado;
-import Aproveite_bem_api.model.Usuario;
 import Aproveite_bem_api.repository.UsuarioRepository;
+import aproveite_bem.exeption.RegistroNaoEncontrado;
+import aproveite_bem.model.Usuario;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

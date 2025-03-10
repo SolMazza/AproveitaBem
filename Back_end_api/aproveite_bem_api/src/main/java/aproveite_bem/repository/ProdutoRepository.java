@@ -1,6 +1,7 @@
-package Aproveite_bem_api.repository;
+package aproveite_bem.repository;
 
-import Aproveite_bem_api.model.Produto;
+
+import aproveite_bem.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

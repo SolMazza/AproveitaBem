@@ -1,4 +1,4 @@
-package Aproveite_bem_api.controller;
+package aproveite_bem.controller;
 
 import Aproveite_bem_api.repository.UsuarioRepository;
 import Aproveite_bem_api.service.UsuarioService;

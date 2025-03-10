@@ -1,4 +1,4 @@
-package Aproveite_bem_api.model;
+package aproveite_bem.model;
 
 
 import jakarta.persistence.*;

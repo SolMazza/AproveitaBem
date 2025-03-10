@@ -1,4 +1,4 @@
-package Aproveite_bem_api.service;
+package aproveite_bem.service;
 
 import org.springframework.stereotype.Service;
 

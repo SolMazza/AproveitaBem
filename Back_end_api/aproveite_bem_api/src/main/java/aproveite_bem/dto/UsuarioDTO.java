@@ -1,7 +1,8 @@
-package Aproveite_bem_api.dto;
+package aproveite_bem.dto;
 
 
-import Aproveite_bem_api.model.Usuario;
+
+import aproveite_bem.model.Usuario;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,11 +22,11 @@ public class UsuarioDTO {
     }
 
     public String getNomeCompletp() {
-        return nomeCompletp;
+        return nomeCompleto;
     }
 
-    public void setNomeCompletp(String nomeCompletp) {
-        this.nomeCompletp = nomeCompletp;
+    public void setNomeCompletp(String nomeCompleto) {
+        this.nomeCompleto= nomeCompleto;
     }
 
     public String getEmail() {

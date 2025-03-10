@@ -1,4 +1,4 @@
-package Aproveite_bem_api.exeption;
+package aproveite_bem.exeption;
 
 public class RegistroNaoEncontrado extends RuntimeException{
     public RegistroNaoEncontrado(String mensagem){
