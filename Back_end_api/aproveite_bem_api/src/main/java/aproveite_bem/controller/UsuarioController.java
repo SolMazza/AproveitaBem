@@ -22,6 +22,10 @@ private final UsuarioService usuarioService;
         this.usuarioService = usuarioService;
     }
 
+    @GetMapping()
+    public ResponseEntity<Usuario> buscarPorEmail(){
+        usuarioService.busca()
+    }
 
     @PostMapping("/editar")
     public ResponseEntity<Usuario> editar(@RequestBody String email, Usuario usuario) {
