@@ -5,6 +5,7 @@ import aproveite_bem.model.Categoria;
 import aproveite_bem.model.Produto;
 import aproveite_bem.repository.CarrinhoDeCompraRepository;
 import aproveite_bem.repository.CategoriaRepository;
+import aproveite_bem.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +14,9 @@ import java.util.List;
 public class CarrinhoDeCompraService {
 
     private CarrinhoDeCompraRepository carrinhoDeCompraRepository;
+    private ProdutoRepository produtoRepository;
 
-    public CarrinhoDeCompraService(CarrinhoDeCompraRepository carrinhoDeCompraRepository){
+    public CarrinhoDeCompraService(CarrinhoDeCompraRepository carrinhoDeCompraRepository,ProdutoRepository produtoRepository){
         this.carrinhoDeCompraRepository = carrinhoDeCompraRepository;
     }
 
@@ -28,7 +30,18 @@ public class CarrinhoDeCompraService {
         carrinho.getProdutos().add(produto);
         return carrinhoDeCompraRepository.save(carrinho);
     }
+    public CarrinhoDeCompra removerProduto(Long carrinhoId, Long produtoId) {
+        CarrinhoDeCompra carrinho = carrinhoDeCompraRepository.findById(carrinhoId)
+                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+
+        carrinho.getProdutos().removeIf(produto -> produto.getId().equals(produtoId));
+        return carrinhoDeCompraRepository.save(carrinho);
     }
-}
+
+    public void excluirCarrinho(Long id) {
+        carrinhoDeCompraRepository.deleteById(id);
+    }
+    }
+
 
 
