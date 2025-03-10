@@ -22,14 +22,21 @@ private final UsuarioService usuarioService;
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping()
-    public ResponseEntity<Usuario> buscarPorEmail(){
-        usuarioService.busca()
+    @GetMapping("/buscar")
+    public ResponseEntity<Usuario> buscarPorEmail(@RequestParam String email) {
+        Usuario usuario = usuarioService.busca(email);
+        return ResponseEntity.ok(usuario);
     }
 
     @PostMapping("/editar")
     public ResponseEntity<Usuario> editar(@RequestBody String email, Usuario usuario) {
         return ResponseEntity.ok(usuarioService.editar(email, usuario));
+    }
+
+    @PutMapping("/editarSenha")
+    public ResponseEntity<String> editarSenha(@RequestParam String email, @RequestParam String senha) {
+        usuarioService.editarSenha(email, senha);
+        return ResponseEntity.ok("Senha atualizada com sucesso!");
     }
 
     @PostMapping("/cadastrar")
