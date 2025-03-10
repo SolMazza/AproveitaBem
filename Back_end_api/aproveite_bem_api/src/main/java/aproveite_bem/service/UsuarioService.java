@@ -40,12 +40,13 @@ public class UsuarioService {
     public Usuario editarSenha(String email, String senha){
         Usuario usuarioEditado = this.busca(email);
         usuarioEditado.setSenha(passwordEncoder.encode(senha));
-        return usuarioEditado;
+        return usuarioRepository.save(usuarioEditado);
 
     }
+
     public void deletar(String email) {
-      Usuario deletarEmail = this.busca(email);
-      usuarioRepository.delete(deletarEmail);
+      Usuario deletar = this.busca(email);
+      usuarioRepository.delete(deletar);
     }
 
 }

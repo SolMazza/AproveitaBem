@@ -46,10 +46,6 @@ public class Produto {
         return carrinhoDeCompra;
     }
 
-    public void setCarrinhoDeCompra(CarrinhoDeCompra carrinhoDeCompra) {
-        this.carrinhoDeCompra = carrinhoDeCompra;
-    }
-
     public Long getId() {
         return id;
     }
