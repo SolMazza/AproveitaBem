@@ -55,7 +55,7 @@ private final UsuarioService usuarioService;
     }
 
     @DeleteMapping("/deletar")
-    public ResponseEntity<String> deletarPeloEmail(@RequestBody String email) {
+    public ResponseEntity<String> deletarPeloEmail(@RequestParam String email) {
         usuarioService.deletar(email);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }
