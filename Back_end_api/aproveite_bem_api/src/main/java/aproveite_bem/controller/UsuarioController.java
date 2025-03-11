@@ -34,7 +34,7 @@ private final UsuarioService usuarioService;
     }
 
     @PutMapping("/editarSenha")
-    public ResponseEntity<String> editarSenha(@RequestParam String email, @RequestParam String senha) {
+    public ResponseEntity<String> editarSenha(@RequestBody String email, @RequestBody String senha) {
         usuarioService.editarSenha(email, senha);
         return ResponseEntity.ok("Senha atualizada com sucesso!");
     }
@@ -46,7 +46,7 @@ private final UsuarioService usuarioService;
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String senha) {
+    public ResponseEntity<String> login(@RequestBody String email, @RequestBody String senha) {
         Optional<Usuario> usuario = usuarioService.autenticar(email, senha);
         if (usuario.isPresent()) {
             return ResponseEntity.ok("Login bem-sucedido!");
@@ -55,7 +55,7 @@ private final UsuarioService usuarioService;
     }
 
     @DeleteMapping("/deletar")
-    public ResponseEntity<String> deletarPeloEmail(@RequestBody String email) {
+    public ResponseEntity<String> deletarPeloEmail(@RequestParam String email) {
         usuarioService.deletar(email);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }

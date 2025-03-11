@@ -1,10 +1,8 @@
 package aproveite_bem.service;
 
 import aproveite_bem.model.CarrinhoDeCompra;
-import aproveite_bem.model.Categoria;
 import aproveite_bem.model.Produto;
 import aproveite_bem.repository.CarrinhoDeCompraRepository;
-import aproveite_bem.repository.CategoriaRepository;
 import aproveite_bem.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +39,4 @@ public class CarrinhoDeCompraService {
     public void excluirCarrinho(Long id) {
         carrinhoDeCompraRepository.deleteById(id);
     }
-    }
-
-
-
+}
