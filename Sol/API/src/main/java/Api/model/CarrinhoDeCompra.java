@@ -1,42 +1,56 @@
-
 package Api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "carrinhoDeCompra")
+@Table(name = "carrinhos_de_compra")
 @EqualsAndHashCode(of = "id")
 public class CarrinhoDeCompra {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "carrinhoDeCompra")
-    private Set<Produto> produtos;
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "carrinhoDeCompra", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<itemLista> itens;
 
     public CarrinhoDeCompra() {
     }
 
-    public CarrinhoDeCompra(Long id, Set<Produto> produtos) {
+    public CarrinhoDeCompra(Long id, Usuario usuario, List<itemLista> itens) {
         this.id = id;
-        this.produtos = produtos;
+        this.usuario = usuario;
+        this.itens = itens;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Set<Produto> getProdutos() {
-        return produtos;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setProdutos(Set<Produto> produtos) {
-        this.produtos = produtos;
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public List<itemLista> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<itemLista> itens) {
+        this.itens = itens;
     }
 }
-

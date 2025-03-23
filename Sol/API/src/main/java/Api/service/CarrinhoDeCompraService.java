@@ -2,6 +2,7 @@ package Api.service;
 
 import Api.model.CarrinhoDeCompra;
 import Api.model.Produto;
+import Api.model.itemLista;
 import Api.repository.CarrinhoDeCompraRepository;
 import Api.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
@@ -24,14 +25,14 @@ public class CarrinhoDeCompraService {
         Produto produto = produtoRepository.findById(produtoId)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        carrinho.getProdutos().add(produto);
+        carrinho.getItens().add(new itemLista());
         return carrinhoDeCompraRepository.save(carrinho);
     }
     public CarrinhoDeCompra removerProduto(Long carrinhoId, Long produtoId) {
         CarrinhoDeCompra carrinho = carrinhoDeCompraRepository.findById(carrinhoId)
                 .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
 
-        carrinho.getProdutos().removeIf(produto -> produto.getId().equals(produtoId));
+        carrinho.getItens().removeIf(produto -> produto.getId().equals(produtoId));
         return carrinhoDeCompraRepository.save(carrinho);
     }
 
