@@ -1,13 +1,11 @@
 package Api.model;
 
-import Api.dto.UsuarioRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "usuarios")
 @EqualsAndHashCode(of = "id")
-@Builder
 public class Usuario {
 
     @Id
@@ -23,6 +21,8 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CarrinhoDeCompra carrinhoDeCompra;
 
     public Usuario(Long id, String email, String nomeCompleto, String senha) {
         this.id = id;
@@ -31,17 +31,13 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Usuario() {
-    }
-
-    public Usuario(UsuarioRequestDto usuarioRequestDto) {
-        this.email = usuarioRequestDto.email();
-        this.nomeCompleto = usuarioRequestDto.nomeCompleto();
-        this.senha = usuarioRequestDto.senha();
-    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -66,5 +62,13 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public CarrinhoDeCompra getCarrinhoDeCompra() {
+        return carrinhoDeCompra;
+    }
+
+    public void setCarrinhoDeCompra(CarrinhoDeCompra carrinhoDeCompra) {
+        this.carrinhoDeCompra = carrinhoDeCompra;
     }
 }
