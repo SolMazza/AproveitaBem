@@ -9,7 +9,8 @@ A ideia de desenvolver uma aplicação web para solucionar problemas reais e cot
 **Anatomia do projeto:**  
 
 **Front-End:** TypeScript e React 
-	>  
+	
+ 	>  
 
 **Back-End:** Java Spring boot 
 
@@ -17,7 +18,7 @@ A ideia de desenvolver uma aplicação web para solucionar problemas reais e cot
 
 **Banco de Dados:** MySQL 
 
-	>  
+	>  A escolha f
 
  **Carrinho de Compras:** O usuário pode:  
 
