@@ -6,33 +6,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(path = "categorias")
 public class CategoriaController {
-
     private final CategoriaService categoriaService;
 
     public CategoriaController(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
     }
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Categoria> cadastrar(@RequestBody Categoria categoria) {
-        return ResponseEntity.ok(categoriaService.cadastrar(categoria));
+
+    @PostMapping("/cadastrar/{usuarioId}")
+    public ResponseEntity<Categoria> cadastrar(
+            @PathVariable Long usuarioId,
+            @RequestBody Categoria categoria) {
+        return ResponseEntity.ok(categoriaService.cadastrar(usuarioId, categoria));
     }
 
-    @GetMapping()
-    public ResponseEntity<Categoria> buscarPeloId(@RequestParam Long Id){
-    Categoria categoria = categoriaService.buscarPeloId(Id);
-    return ResponseEntity.ok(categoria);
+    @GetMapping("/{id}")
+    public ResponseEntity<Categoria> buscarPeloId(@PathVariable Long id) {
+        return ResponseEntity.ok(categoriaService.buscarPeloId(id));
+    }
 
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<Categoria>> listarPorUsuario(@PathVariable Long usuarioId) {
+        return ResponseEntity.ok(categoriaService.listarPorUsuario(usuarioId));
+    }
+
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Categoria> editar(
+            @PathVariable Long id,
+            @RequestBody Categoria categoria) {
+        return ResponseEntity.ok(categoriaService.editar(id, categoria));
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        categoriaService.deletarPeloId(id);
+        return ResponseEntity.noContent().build();
     }
 }
-/*
-public List<Categoria> ListarTodos(){
-public List<Categoria> ListarNome(String nome){
-public Categoria buscarPeloId(Long id) {
-public void deletarTodos()
-public void deletarPeloId(Long id) {
-
-
-*/

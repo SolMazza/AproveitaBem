@@ -9,28 +9,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/itens-lista")
 public class ItemListaController {
 
-    private final ItemListaService itemListaService;
+    private final ItemListaService itemService;
 
-    public ItemListaController(ItemListaService itemListaService) {
-        this.itemListaService = itemListaService;
+    public ItemListaController(ItemListaService itemService) {
+        this.itemService = itemService;
     }
 
-    @PostMapping("/adicionar")
-    public ResponseEntity<ItemLista> adicionarItem(
-            @RequestBody Long carrinhoId, String nome, int quantidade) {
-        ItemLista item = itemListaService.adicionarItem(carrinhoId, nome, quantidade);
-        return ResponseEntity.ok(item);
+    @PostMapping
+    public ResponseEntity<ItemLista> criarItem(@RequestBody ItemLista itemRequest) {
+        return ResponseEntity.ok(itemService.criarItem(itemRequest));
     }
 
-    @DeleteMapping("/remover/{itemId}")
-    public ResponseEntity<String> removerItem(@PathVariable Long itemId) {
-        itemListaService.removerItem(itemId);
-        return ResponseEntity.ok("Item removido com sucesso");
-    }
-
-    @DeleteMapping("/deletar-Todos")
-    public ResponseEntity<String> deletarTodos(){
-        itemListaService.removerTodosItens();
-        return ResponseEntity.ok(("Todos os itens foram removidos"));
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<Void> deletarItem(@PathVariable Long itemId) {
+        itemService.deletarItem(itemId);
+        return ResponseEntity.noContent().build();
     }
  }

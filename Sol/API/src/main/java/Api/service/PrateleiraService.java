@@ -1,12 +1,11 @@
 package Api.service;
 
-import Api.model.CarrinhoDeCompra;
-import Api.model.Prateleira;
-import Api.model.Produto;
-import Api.model.ItemLista;
+import Api.exception.RegistroNaoEncontrado;
+import Api.model.*;
 import Api.repository.CarrinhoDeCompraRepository;
 import Api.repository.PrateleiraRepository;
 import Api.repository.ProdutoRepository;
+import Api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +15,12 @@ public class PrateleiraService {
 
     private PrateleiraRepository prateleiraRepository;
     private ProdutoRepository produtoRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public PrateleiraService(PrateleiraRepository prateleiraRepository, ProdutoRepository produtoRepository){
+    public PrateleiraService(PrateleiraRepository prateleiraRepository, UsuarioRepository usuarioRepository, ProdutoRepository produtoRepository){
         this.prateleiraRepository = prateleiraRepository;
         this.produtoRepository = produtoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public Prateleira adicionarProduto(Long prateleiraId, Long produtoId) {
@@ -39,6 +40,13 @@ public class PrateleiraService {
         List<Produto> listaProdutos = prateleira.getProdutos();
 
         return listaProdutos;
+    }
+
+    public Prateleira cadastrar(Long usuarioId, Prateleira prateleira) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RegistroNaoEncontrado("Usuário não encontrado"));
+        prateleira.setUsuario(usuario);
+        return prateleiraRepository.save(prateleira);
     }
 
     public Prateleira removerProduto(Long prateleiraId, Long produtoId) {

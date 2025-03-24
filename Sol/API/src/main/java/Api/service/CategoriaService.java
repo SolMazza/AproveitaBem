@@ -2,7 +2,9 @@ package Api.service;
 
 import Api.exception.RegistroNaoEncontrado;
 import Api.model.Categoria;
+import Api.model.Usuario;
 import Api.repository.CategoriaRepository;
+import Api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,49 +13,49 @@ import java.util.Optional;
 @Service
 public class CategoriaService {
 
-    private CategoriaRepository categoriaRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public CategoriaService(CategoriaRepository categoriaRepository){
+    public CategoriaService(
+            CategoriaRepository categoriaRepository,
+            UsuarioRepository usuarioRepository) {
         this.categoriaRepository = categoriaRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
-    public List<Categoria> ListarTodos(){
-    List<Categoria> categorias = categoriaRepository.findAll();
-    return categorias;
-    }
-
-    public List<Categoria> ListarNome(String nome){
-        List<Categoria> categorias = categoriaRepository.findByNome(nome);
-        return categorias;
+    public Categoria cadastrar(Long usuarioId, Categoria categoria) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RegistroNaoEncontrado("Usuário não encontrado"));
+        categoria.setUsuario(usuario);
+        return categoriaRepository.save(categoria);
     }
 
     public Categoria buscarPeloId(Long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
-        return categoria.orElseThrow(() -> new RegistroNaoEncontrado("id " + id + " não encontrado"));
-
+        return categoriaRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontrado("Categoria não encontrada"));
     }
 
-    public void deletarTodos() {
-        categoriaRepository.deleteAll();
+    public List<Categoria> listarPorUsuario(Long usuarioId) {
+        return categoriaRepository.findByUsuarioId(usuarioId);
+    }
+
+    public List<Categoria> listarTodos() {
+        return categoriaRepository.findAll();
+    }
+
+    public List<Categoria> listarPorNome(String nome) {
+        return categoriaRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
+    public Categoria editar(Long id, Categoria categoriaAtualizada) {
+        Categoria categoria = buscarPeloId(id);
+        categoria.setNome(categoriaAtualizada.getNome());
+        categoria.setFormaDeArmazenar(categoriaAtualizada.getFormaDeArmazenar());
+        return categoriaRepository.save(categoria);
     }
 
     public void deletarPeloId(Long id) {
         categoriaRepository.deleteById(id);
     }
-
-    public Categoria cadastrar(Categoria novaCategoria){
-        return categoriaRepository.save(novaCategoria);
-    }
-
-    public Categoria editar(Long id, Categoria novaCategoria){
-        Categoria categoriaEditada = this.buscarPeloId(id);
-        categoriaEditada.setNome(novaCategoria.getNome());
-        categoriaEditada.setProdutos(novaCategoria.getProdutos());
-        categoriaEditada.setFormaDeArmazenar(novaCategoria.getFormaDeArmazenar());
-
-        return categoriaRepository.save(categoriaEditada);
-
-    }
-
 
 }

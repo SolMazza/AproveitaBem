@@ -3,6 +3,7 @@ package Api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,19 +20,32 @@ public class Categoria {
     private String nome;
 
     @OneToMany(mappedBy = "categoria")
-    private Set<Produto> produtos;
+    private List<Produto> produtos;
 
     @Column
     private String formaDeArmazenar;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+
     public Categoria() {
     }
 
-    public Categoria(Long id, String nome, Set<Produto> produtos, String formaDeArmazenar) {
+    public Categoria(Long id, String nome, List<Produto> produtos, String formaDeArmazenar) {
         this.id = id;
         this.nome = nome;
         this.produtos = produtos;
         this.formaDeArmazenar = formaDeArmazenar;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -46,11 +60,11 @@ public class Categoria {
         this.nome = nome;
     }
 
-    public Set<Produto> getProdutos() {
+    public List<Produto> getProdutos() {
         return produtos;
     }
 
-    public void setProdutos(Set<Produto> produtos) {
+    public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
     }
 

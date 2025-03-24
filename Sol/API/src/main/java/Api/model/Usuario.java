@@ -29,18 +29,12 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private CarrinhoDeCompra carrinhoDeCompra;
 
-    @ManyToOne
-    @JoinColumn(name = "prateleira_id", nullable = false)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prateleira> prateleiras;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Categoria> categorias;
 
-
-    public Usuario(Long id, String email, String nomeCompleto, String senha) {
-        this.id = id;
-        this.email = email;
-        this.nomeCompleto = nomeCompleto;
-        this.senha = senha;
-    }
 
     public Usuario() {
     }
@@ -50,6 +44,7 @@ public class Usuario {
         this.nomeCompleto = usuarioRequestDto.nomeCompleto();
         this.senha = usuarioRequestDto.senha();
         this.carrinhoDeCompra = usuarioRequestDto.carrinhoDeCompra();
+        this.categorias = new ArrayList<>();
         this.prateleiras = new ArrayList<>();
     }
 
@@ -79,6 +74,14 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 
     public String getNomeCompleto() {

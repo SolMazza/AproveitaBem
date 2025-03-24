@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
-    List<Categoria> findByNome(String nome);
+    List<Categoria> findByUsuarioId(Long usuarioId);
+    List<Categoria> findByNomeContainingIgnoreCase(String nome);
 }

@@ -53,6 +53,13 @@ public class Produto {
         return id;
     }
 
+    public Prateleira getPrateleira() {
+        return prateleira;
+    }
+
+    public void setPrateleira(Prateleira prateleira) {
+        this.prateleira = prateleira;
+    }
 
     public String getNome() {
         return nome;

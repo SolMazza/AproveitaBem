@@ -4,6 +4,7 @@ import Api.dto.UsuarioRequestDto;
 import Api.dto.UsuarioResponseDto;
 import Api.exception.RegistroNaoEncontrado;
 import Api.model.*;
+import Api.repository.CategoriaRepository;
 import Api.repository.PrateleiraRepository;
 import Api.repository.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,25 +17,13 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final PrateleiraRepository prateleiraRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PrateleiraRepository prateleiraRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                          BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
-        this.prateleiraRepository = prateleiraRepository;
-    }
+          }
 
-
-    public Usuario adicionarPrateleira(Long usuarioId, Long prateleiraId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
-
-        Prateleira prateleira = prateleiraRepository.findById(prateleiraId)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-
-        usuario.getPrateleiras().add(prateleira);
-        return usuarioRepository.save(usuario);
-    }
 
     public UsuarioResponseDto cadastrar(UsuarioRequestDto usuarioRequestDto) {
         Usuario usuario = new Usuario(usuarioRequestDto);
@@ -44,7 +33,7 @@ public class UsuarioService {
         return new UsuarioResponseDto(usuarioSalvo);
     }
 
-    public List<Prateleira> buscarTodasPrateleiras(String email){
+    public List<Prateleira> buscarTodasPrateleiras(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
 
@@ -55,7 +44,7 @@ public class UsuarioService {
 
     public Usuario autenticar(String email) {
         return usuarioRepository.findByEmail(email)
-                                .orElse(null);
+                .orElse(null);
     }
 
     public UsuarioResponseDto busca(String email) {

@@ -19,7 +19,7 @@ public class Prateleira {
     @OneToMany(mappedBy = "prateleira", cascade = CascadeType.ALL)
     private List<Produto> produtos;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 

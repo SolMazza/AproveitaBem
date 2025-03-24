@@ -15,28 +15,31 @@ import java.util.List;
 @RequestMapping(path = "CarrinhoDeCompras")
 public class CarrinhoDeCompraController {
 
-    private CarrinhoDeCompraService carrinhoDeCompraService;
+    private CarrinhoDeCompraService carrinhoService;
 
-    public CarrinhoDeCompraController(CarrinhoDeCompraService carrinhoDeCompraService) {
-        this.carrinhoDeCompraService = carrinhoDeCompraService;
+    public CarrinhoDeCompraController(CarrinhoDeCompraService carrinhoService) {
+        this.carrinhoService = carrinhoService;
     }
 
-    @PostMapping("/adicionar")
-    public ResponseEntity<CarrinhoDeCompra> adicionarProduto(@RequestBody Long idCarrinho, Long idItemLista) {
-        carrinhoDeCompraService.adicionarItemLista(idCarrinho, idItemLista);
-        return (ResponseEntity<CarrinhoDeCompra>) ResponseEntity.ok();
+    @PostMapping("/{carrinhoId}/adicionar-item")
+    public ResponseEntity<CarrinhoDeCompra> adicionarItem(
+            @PathVariable Long carrinhoId,
+            @RequestBody ItemLista itemRequest) {
+        return ResponseEntity.ok(carrinhoService.adicionarItem(carrinhoId, itemRequest));
     }
 
-    @DeleteMapping("/remover")
-    public ResponseEntity<CarrinhoDeCompra> removerProduto(@RequestBody Long idCarrinho, Long idItemLista) {
-        carrinhoDeCompraService.removerProduto(idCarrinho, idItemLista);
-        return (ResponseEntity<CarrinhoDeCompra>) ResponseEntity.ok();
+    @DeleteMapping("/{carrinhoId}/remover-item/{itemId}")
+    public ResponseEntity<Void> removerItem(
+            @PathVariable Long carrinhoId,
+            @PathVariable Long itemId) {
+        carrinhoService.removerItem(carrinhoId, itemId);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{carrinhoId}/BuscarListaItem")
-    public List<ItemLista> buscarListaItens(@RequestParam Long carrinhoId){
-        List<ItemLista> lista = carrinhoDeCompraService.buscarItensCarrinho(carrinhoId);
-        return lista;
+    @GetMapping("/{carrinhoId}/itens")
+    public ResponseEntity<List<ItemLista>> listarItens(@PathVariable Long carrinhoId) {
+        return ResponseEntity.ok(carrinhoService.listarItens(carrinhoId));
     }
+}
 
 }
