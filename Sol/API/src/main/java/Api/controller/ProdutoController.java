@@ -26,17 +26,11 @@ public class ProdutoController {
        return ResponseEntity.ok(produto);
    }
 
-   @GetMapping("/buscar")
+   @GetMapping("/buscar-nome")
     public List<Produto> ListarPeloNome(@RequestParam String nome){
        List<Produto> produtos = produtoService.listarPorNome(nome);
        return produtos;
    }
-    @GetMapping("/todos")
-    public List<Produto> ListarTodos(){
-        List<Produto> produtos = produtoService.listarTodos();
-        return produtos;
-    }
-
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Produto> cadastrar(@RequestBody Produto produto) {
@@ -48,11 +42,6 @@ public class ProdutoController {
        return ResponseEntity.ok(produtoService.editar(id, produto));
     }
 
-   @DeleteMapping("/deletar-todos")
-     public ResponseEntity<String> deletarTodos(){
-        produtoService.deletarTodos();
-       return ResponseEntity.ok("Produtos deletados com sucesso");
-   }
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deletar(@RequestParam Long id){

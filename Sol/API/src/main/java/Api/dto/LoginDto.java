@@ -2,5 +2,5 @@ package Api.dto;
 
 
 
-public record LoginDto(String email,String senha) {
+public record LoginDto(String email) {
 }

@@ -1,12 +1,12 @@
 package Api.controller;
 
-import Api.model.itemLista;
+import Api.model.ItemLista;
 import Api.service.ItemListaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/itens-lista")
+@RequestMapping(path = "/itens-lista")
 public class ItemListaController {
 
     private final ItemListaService itemListaService;
@@ -16,11 +16,9 @@ public class ItemListaController {
     }
 
     @PostMapping("/adicionar")
-    public ResponseEntity<itemLista> adicionarItem(
-            @RequestParam Long carrinhoId,
-            @RequestParam String nome,
-            @RequestParam int quantidade) {
-        itemLista item = itemListaService.adicionarItem(carrinhoId, nome, quantidade);
+    public ResponseEntity<ItemLista> adicionarItem(
+            @RequestBody Long carrinhoId, String nome, int quantidade) {
+        ItemLista item = itemListaService.adicionarItem(carrinhoId, nome, quantidade);
         return ResponseEntity.ok(item);
     }
 
@@ -29,4 +27,10 @@ public class ItemListaController {
         itemListaService.removerItem(itemId);
         return ResponseEntity.ok("Item removido com sucesso");
     }
-}
+
+    @DeleteMapping("/deletar-Todos")
+    public ResponseEntity<String> deletarTodos(){
+        itemListaService.removerTodosItens();
+        return ResponseEntity.ok(("Todos os itens foram removidos"));
+    }
+ }

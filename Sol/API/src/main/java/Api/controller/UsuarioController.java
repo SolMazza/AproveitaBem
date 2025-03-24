@@ -3,11 +3,15 @@ package Api.controller;
 import Api.dto.LoginDto;
 import Api.dto.UsuarioRequestDto;
 import Api.dto.UsuarioResponseDto;
+import Api.model.Prateleira;
+import Api.model.Produto;
 import Api.model.Usuario;
 import Api.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "usuarios")
@@ -33,11 +37,13 @@ UsuarioController {
         return ResponseEntity.ok(usuarioService.editar(email, usuarioRequestDto));
     }
 
-    @PutMapping("/editarSenha")
-    public ResponseEntity<String> editarSenha(@RequestBody LoginDto loginDto) {
-        usuarioService.editarSenha(loginDto.email(), loginDto.senha());
-        return ResponseEntity.ok("Senha atualizada com sucesso!");
+
+    @GetMapping("/{usuarioEmail}/BuscarPrateleiras")
+    public List<Prateleira> buscarListaItens(@RequestParam String email){
+        List<Prateleira> lista = usuarioService.buscarTodasPrateleiras(email);
+        return lista;
     }
+
 
     @PostMapping("/cadastrar")
     public ResponseEntity<UsuarioResponseDto> cadastrar(@RequestBody UsuarioRequestDto usuarioRequestDto) {
@@ -47,7 +53,7 @@ UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        Usuario usuario = usuarioService.autenticar(loginDto.email(), loginDto.senha());
+        Usuario usuario = usuarioService.autenticar(loginDto.email());
         if (usuario != null) {
             return ResponseEntity.ok("Login bem-sucedido!");
         }

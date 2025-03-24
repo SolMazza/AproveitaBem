@@ -3,33 +3,59 @@ package Api.service;
 import Api.dto.UsuarioRequestDto;
 import Api.dto.UsuarioResponseDto;
 import Api.exception.RegistroNaoEncontrado;
-import Api.model.Usuario;
+import Api.model.*;
+import Api.repository.PrateleiraRepository;
 import Api.repository.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final PrateleiraRepository prateleiraRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PrateleiraRepository prateleiraRepository, BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.prateleiraRepository = prateleiraRepository;
+    }
+
+
+    public Usuario adicionarPrateleira(Long usuarioId, Long prateleiraId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+
+        Prateleira prateleira = prateleiraRepository.findById(prateleiraId)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        usuario.getPrateleiras().add(prateleira);
+        return usuarioRepository.save(usuario);
     }
 
     public UsuarioResponseDto cadastrar(UsuarioRequestDto usuarioRequestDto) {
         Usuario usuario = new Usuario(usuarioRequestDto);
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setCarrinhoDeCompra(new CarrinhoDeCompra(usuario));
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
         return new UsuarioResponseDto(usuarioSalvo);
     }
 
-    public Usuario autenticar(String email, String senha) {
+    public List<Prateleira> buscarTodasPrateleiras(String email){
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+
+        List<Prateleira> listaPrateleiras = usuario.getPrateleiras();
+
+        return listaPrateleiras;
+    }
+
+    public Usuario autenticar(String email) {
         return usuarioRepository.findByEmail(email)
-                .filter(usuario -> passwordEncoder.matches(senha, usuario.getSenha()))
-                .orElse(null);
+                                .orElse(null);
     }
 
     public UsuarioResponseDto busca(String email) {
@@ -48,12 +74,6 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario editarSenha(String email, String senha) {
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RegistroNaoEncontrado("Usuário não encontrado"));
-        usuario.setSenha(passwordEncoder.encode(senha));
-        return usuarioRepository.save(usuario);
-    }
 
     public void deletar(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)

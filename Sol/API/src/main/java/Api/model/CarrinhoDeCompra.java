@@ -3,6 +3,7 @@ package Api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,15 +20,14 @@ public class CarrinhoDeCompra {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "carrinhoDeCompra", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<itemLista> itens;
+    private List<ItemLista> itens;
 
     public CarrinhoDeCompra() {
     }
 
-    public CarrinhoDeCompra(Long id, Usuario usuario, List<itemLista> itens) {
-        this.id = id;
+    public CarrinhoDeCompra(Usuario usuario) {
         this.usuario = usuario;
-        this.itens = itens;
+        this.itens = new ArrayList<>();
     }
 
     public Long getId() {
@@ -46,11 +46,11 @@ public class CarrinhoDeCompra {
         this.usuario = usuario;
     }
 
-    public List<itemLista> getItens() {
+    public List<ItemLista> getItens() {
         return itens;
     }
 
-    public void setItens(List<itemLista> itens) {
+    public void setItens(List<ItemLista> itens) {
         this.itens = itens;
     }
 }

@@ -19,8 +19,10 @@ public class Produto {
 
     @Column
     private LocalDate dataFabricacao;
+
     @Column
     private LocalDate dataVencimento;
+
     @Column(nullable = false)
     private int quantidade;
 
@@ -29,21 +31,23 @@ public class Produto {
     private Categoria categoria;
 
     @ManyToOne
-    @JoinColumn(name = "carrinho_id")
-    private CarrinhoDeCompra carrinhoDeCompra;
+    @JoinColumn(name = "prateleira_id")
+    private Prateleira prateleira;
 
     public Produto() {
     }
 
-    public Produto(Long id, String nome, LocalDate dataFabricacao, LocalDate dataVencimento, int quantidade, Categoria categoria, CarrinhoDeCompra carrinhoDeCompra) {
+    public Produto(Long id, String nome, LocalDate dataFabricacao, LocalDate dataVencimento, int quantidade, Categoria categoria,  Prateleira prateleira) {
         this.id = id;
         this.nome = nome;
         this.dataFabricacao = dataFabricacao;
         this.dataVencimento = dataVencimento;
         this.quantidade = quantidade;
         this.categoria = categoria;
-        this.carrinhoDeCompra = carrinhoDeCompra;
+        this.prateleira = prateleira;
     }
+
+
 
     public Long getId() {
         return id;
@@ -88,13 +92,5 @@ public class Produto {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }
-
-    public CarrinhoDeCompra getCarrinhoDeCompra() {
-        return carrinhoDeCompra;
-    }
-
-    public void setCarrinhoDeCompra(CarrinhoDeCompra carrinhoDeCompra) {
-        this.carrinhoDeCompra = carrinhoDeCompra;
     }
 }

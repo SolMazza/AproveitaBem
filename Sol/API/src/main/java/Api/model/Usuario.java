@@ -4,6 +4,9 @@ import Api.dto.UsuarioRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "usuarios")
 @EqualsAndHashCode(of = "id")
@@ -23,6 +26,14 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CarrinhoDeCompra carrinhoDeCompra;
+
+    @ManyToOne
+    @JoinColumn(name = "prateleira_id", nullable = false)
+    private List<Prateleira> prateleiras;
+
+
 
     public Usuario(Long id, String email, String nomeCompleto, String senha) {
         this.id = id;
@@ -38,6 +49,24 @@ public class Usuario {
         this.email = usuarioRequestDto.email();
         this.nomeCompleto = usuarioRequestDto.nomeCompleto();
         this.senha = usuarioRequestDto.senha();
+        this.carrinhoDeCompra = usuarioRequestDto.carrinhoDeCompra();
+        this.prateleiras = new ArrayList<>();
+    }
+
+    public CarrinhoDeCompra getCarrinhoDeCompra() {
+        return carrinhoDeCompra;
+    }
+
+    public void setCarrinhoDeCompra(CarrinhoDeCompra carrinhoDeCompra) {
+        this.carrinhoDeCompra = carrinhoDeCompra;
+    }
+
+    public List<Prateleira> getPrateleiras() {
+        return prateleiras;
+    }
+
+    public void setPrateleiras(List<Prateleira> prateleiras) {
+        this.prateleiras = prateleiras;
     }
 
     public Long getId() {

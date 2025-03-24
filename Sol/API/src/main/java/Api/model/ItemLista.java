@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "itens_lista")
 @EqualsAndHashCode(of = "id")
-public class itemLista {
+public class ItemLista {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +22,15 @@ public class itemLista {
     @JoinColumn(name = "carrinho_id", nullable = false)
     private CarrinhoDeCompra carrinhoDeCompra;
 
-    public itemLista() {
+    public ItemLista() {
     }
 
-    public itemLista(Long id, String nome, int quantidade, CarrinhoDeCompra carrinhoDeCompra) {
-        this.id = id;
+    public ItemLista(Long id, String nome, int quantidade, CarrinhoDeCompra carrinhoDeCompra) {
         this.nome = nome;
         this.quantidade = quantidade;
         this.carrinhoDeCompra = carrinhoDeCompra;
     }
+
 
     public Long getId() {
         return id;
