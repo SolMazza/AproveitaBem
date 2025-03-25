@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @Controller
 @RequestMapping(path = "CarrinhoDeCompras")
 public class CarrinhoDeCompraController {
@@ -42,4 +43,3 @@ public class CarrinhoDeCompraController {
     }
 }
 
-}

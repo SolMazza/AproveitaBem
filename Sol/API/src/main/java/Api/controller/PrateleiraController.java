@@ -1,8 +1,6 @@
 package Api.controller;
 
 import Api.model.*;
-import Api.repository.PrateleiraRepository;
-import Api.service.CarrinhoDeCompraService;
 import Api.service.PrateleiraService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/prateleiras")
 public class PrateleiraController {

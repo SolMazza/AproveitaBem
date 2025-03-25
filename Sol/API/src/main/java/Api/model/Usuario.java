@@ -43,7 +43,6 @@ public class Usuario {
         this.email = usuarioRequestDto.email();
         this.nomeCompleto = usuarioRequestDto.nomeCompleto();
         this.senha = usuarioRequestDto.senha();
-        this.carrinhoDeCompra = usuarioRequestDto.carrinhoDeCompra();
         this.categorias = new ArrayList<>();
         this.prateleiras = new ArrayList<>();
     }

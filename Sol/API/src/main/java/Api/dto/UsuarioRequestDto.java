@@ -5,6 +5,6 @@ import Api.model.Prateleira;
 
 import java.util.List;
 
-public record UsuarioRequestDto(String nomeCompleto, String senha, String email, CarrinhoDeCompra carrinhoDeCompra, List<Prateleira> prateleira) {
+public record UsuarioRequestDto(String nomeCompleto, String senha, String email) {
 
 }
