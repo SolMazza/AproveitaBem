@@ -1,3 +1,6 @@
+Apresentação TCC:
+https://www.canva.com/design/DAGiBtz-75E/_nI3561SuuF3fO1Fboi_TA/edit?utm_content=DAGiBtz-75E&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
 **Projeto: AproveiteBem** 
 
 **Tipo: Aplicação Web** 
