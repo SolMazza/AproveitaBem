@@ -3,6 +3,7 @@ package Api.controller;
 import Api.model.*;
 import Api.service.PrateleiraService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,11 @@ public class PrateleiraController {
     }
 
 
-    @PostMapping("/cadastrar/{usuarioId}")
+    @PostMapping("/cadastrar")
     public ResponseEntity<Prateleira> cadastrar(
-            @PathVariable Long usuarioId,
+            @AuthenticationPrincipal Usuario usuario,
             @RequestBody Prateleira prateleira) {
-        return ResponseEntity.ok(prateleiraService.cadastrar(usuarioId, prateleira));
+        return ResponseEntity.ok(prateleiraService.cadastrar(usuario.getId(), prateleira));
     }
 
 

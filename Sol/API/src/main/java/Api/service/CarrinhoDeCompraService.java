@@ -8,6 +8,7 @@ import Api.repository.ItemListaRepository;
 import Api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class CarrinhoDeCompraService {
     }
 
     public ItemLista adicionarItemPorUsuario(Long usuarioId, ItemLista itemRequest) {
-        CarrinhoDeCompra carrinho = getOrCreateCarrinhoForUsuario(usuarioId);
+        CarrinhoDeCompra carrinho = pegarOuCriarCarrinhoPeloUsuario(usuarioId);
 
         ItemLista item = new ItemLista();
         item.setNome(itemRequest.getNome());
@@ -47,7 +48,6 @@ public class CarrinhoDeCompraService {
         carrinho.getItens().removeIf(item -> item.getId().equals(itemId));
         carrinhoRepo.save(carrinho);
 
-        // Opcional: deletar o item do banco de dados também
         itemRepo.deleteById(itemId);
     }
 
@@ -64,7 +64,7 @@ public class CarrinhoDeCompraService {
                 .orElseThrow(() -> new RuntimeException("Carrinho não encontrado para este usuário"));
     }
 
-    private CarrinhoDeCompra getOrCreateCarrinhoForUsuario(Long usuarioId) {
+    private CarrinhoDeCompra pegarOuCriarCarrinhoPeloUsuario(Long usuarioId) {
         Usuario usuario = usuarioRepo.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -75,6 +75,7 @@ public class CarrinhoDeCompraService {
         } else {
             CarrinhoDeCompra novoCarrinho = new CarrinhoDeCompra();
             novoCarrinho.setUsuario(usuario);
+            novoCarrinho.setItens(new ArrayList<>());
             return carrinhoRepo.save(novoCarrinho);
         }
     }

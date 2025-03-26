@@ -23,6 +23,9 @@ public class Prateleira {
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
+    public Prateleira() {
+        this.produtos = new ArrayList<>();
+    }
 
     public Prateleira(Usuario usuario) {
         this.produtos = new ArrayList<>();

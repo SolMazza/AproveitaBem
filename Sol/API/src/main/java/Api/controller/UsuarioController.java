@@ -24,65 +24,50 @@ import java.util.List;
 @RequestMapping(path = "usuarios")
 public class
 UsuarioController {
-
     private final UsuarioService usuarioService;
+
     private final CategoriaService categoriaService;
-
-
-
 
     public UsuarioController(UsuarioService usuarioService, CategoriaService categoriaService) {
         this.usuarioService = usuarioService;
         this.categoriaService = categoriaService;
     }
-
-    @GetMapping("/buscar")
-    public ResponseEntity<UsuarioResponseDto> buscarPorEmail(@RequestParam String email) {
-        UsuarioResponseDto UsuarioResponseDto = usuarioService.busca(email);
-        return ResponseEntity.ok(UsuarioResponseDto);
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioResponseDto> login(@RequestBody LoginDto loginDto) {
+        Usuario usuario = usuarioService.autenticar(loginDto.email());
+        return usuario != null
+                ? ResponseEntity.ok(new UsuarioResponseDto(usuario))
+                : ResponseEntity.status(404).build();
     }
-
-    @PostMapping("/editar")
-    public ResponseEntity<Usuario> editar(@RequestBody String email, UsuarioRequestDto usuarioRequestDto) {
-        return ResponseEntity.ok(usuarioService.editar(email, usuarioRequestDto));
-    }
-
-
-    @GetMapping("/{email}/BuscarPrateleiras")
-    public List<Prateleira> buscarPrateleira(@PathVariable String email){
-        List<Prateleira> lista = usuarioService.buscarTodasPrateleiras(email);
-        return lista;
-    }
-
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioResponseDto> cadastrar(@Valid @RequestBody UsuarioRequestDto usuarioRequestDto) {
+    public ResponseEntity<UsuarioResponseDto> cadastrar(@RequestBody @Valid UsuarioRequestDto usuarioRequestDto) {
         return ResponseEntity.ok(usuarioService.cadastrar(usuarioRequestDto));
     }
 
-
-
-    @PostMapping("/login")
-    public ResponseEntity<UsuarioResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
-        Usuario usuario = usuarioService.autenticar(loginDto.email());
-        if (usuario != null) {
-            return ResponseEntity.ok(new UsuarioResponseDto(
-                    usuario.getId(),
-                    usuario.getEmail(),
-                    usuario.getSenha(),
-                    usuario.getNomeCompleto()
-            ));
-        }
-        return ResponseEntity.status(401).build();
+    // Rotas protegidas
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioResponseDto> getUsuarioLogado(@RequestHeader("App-Key") String appKey,
+                                                               @RequestParam String email) {
+        return ResponseEntity.ok(usuarioService.busca(email));
     }
 
-    @GetMapping("/usuario/me")
-    public ResponseEntity<Long> getUsuarioId(@AuthenticationPrincipal Usuario usuario) {
-        return ResponseEntity.ok(usuario.getId());
+    @GetMapping("/{email}/prateleiras")
+    public ResponseEntity<List<Prateleira>> buscarPrateleiras(@RequestHeader("App-Key") String appKey,
+                                                              @PathVariable String email) {
+        return ResponseEntity.ok(usuarioService.buscarTodasPrateleiras(email));
     }
 
-    @DeleteMapping("/deletar")
-    public ResponseEntity<String> deletarPeloEmail(@RequestParam String email) {
+    @PutMapping
+    public ResponseEntity<Usuario> editar(@RequestHeader("App-Key") String appKey,
+                                          @RequestParam String email,
+                                          @RequestBody UsuarioRequestDto usuarioRequestDto) {
+        return ResponseEntity.ok(usuarioService.editar(email, usuarioRequestDto));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deletar(@RequestHeader("App-Key") String appKey,
+                                          @RequestParam String email) {
         usuarioService.deletar(email);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }

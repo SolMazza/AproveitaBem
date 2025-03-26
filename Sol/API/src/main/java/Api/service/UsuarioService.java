@@ -31,7 +31,8 @@ public class UsuarioService {
     public UsuarioResponseDto cadastrar(UsuarioRequestDto usuarioRequestDto) {
         Usuario usuario = new Usuario(usuarioRequestDto);
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        usuario.setCarrinhoDeCompra(new CarrinhoDeCompra(usuario));
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(usuario);
+        usuario.setCarrinhoDeCompra(carrinho);
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
         categoriaService.criarCategoriasPadrao(usuarioSalvo.getId());
         return new UsuarioResponseDto(usuarioSalvo);

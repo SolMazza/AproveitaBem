@@ -25,7 +25,7 @@ public class ItemLista {
     public ItemLista() {
     }
 
-    public ItemLista(Long id, String nome, int quantidade, CarrinhoDeCompra carrinhoDeCompra) {
+    public ItemLista(String nome, int quantidade, CarrinhoDeCompra carrinhoDeCompra) {
         this.nome = nome;
         this.quantidade = quantidade;
         this.carrinhoDeCompra = carrinhoDeCompra;

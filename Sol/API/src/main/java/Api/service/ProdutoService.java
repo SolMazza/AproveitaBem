@@ -20,6 +20,9 @@ public class ProdutoService {
     }
 
     public Produto adicionar(Produto produto) {
+        if (produto.getQuantidade() < 0) {
+            throw new IllegalArgumentException("Quantidade não pode ser negativa");
+        }
         return produtoRepository.save(produto);
     }
 

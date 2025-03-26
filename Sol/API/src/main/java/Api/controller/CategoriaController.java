@@ -1,8 +1,10 @@
 package Api.controller;
 
 import Api.model.Categoria;
+import Api.model.Usuario;
 import Api.service.CategoriaService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,21 +20,22 @@ public class CategoriaController {
         this.categoriaService = categoriaService;
     }
 
-    @PostMapping("/cadastrar/{usuarioId}")
+    @PostMapping("/cadastrar")
     public ResponseEntity<Categoria> cadastrar(
-            @PathVariable Long usuarioId,
+            @AuthenticationPrincipal Usuario usuario,
             @RequestBody Categoria categoria) {
-        return ResponseEntity.ok(categoriaService.cadastrar(usuarioId, categoria));
+        return ResponseEntity.ok(categoriaService.cadastrar(usuario.getId(), categoria));
+    }
+
+    @GetMapping("/minhas-categorias")
+    public ResponseEntity<List<Categoria>> listarMinhasCategorias(
+            @AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.ok(categoriaService.listarPorUsuario(usuario.getId()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> buscarPeloId(@PathVariable Long id) {
         return ResponseEntity.ok(categoriaService.buscarPeloId(id));
-    }
-
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<Categoria>> listarPorUsuario(@PathVariable Long usuarioId) {
-        return ResponseEntity.ok(categoriaService.listarPorUsuario(usuarioId));
     }
 
     @PutMapping("/editar/{id}")
