@@ -45,7 +45,7 @@ UsuarioController {
         return ResponseEntity.ok(usuarioService.cadastrar(usuarioRequestDto));
     }
 
-    // Rotas protegidas
+
     @GetMapping("/me")
     public ResponseEntity<UsuarioResponseDto> getUsuarioLogado(@RequestHeader("App-Key") String appKey,
                                                                @RequestParam String email) {
