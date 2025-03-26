@@ -3,6 +3,30 @@
 https://www.canva.com/design/DAGiBtz-75E/_nI3561SuuF3fO1Fboi_TA/edit?utm_content=DAGiBtz-75E&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 **Projeto: AproveiteBem** 
+<H2>PARA USAR:</H2>
+<br>
+Para rodaro back é necessário ter: 
+MYSQL Workbeach instalado(Foi usado a Versão 8.04)
+link para download:https://dev.mysql.com/downloads/workbench/
+
+<h2>CONFIGURAÇÃO</h2>
+Configuração do banco, a api foi construiada com banco em localhost, logo a consifguração de user e password vai depender do banco.
+No projeto | Vá no arquivo application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/aproveitebem
+spring.datasource.username=root
+spring.datasource.password=sol123
+
+altere estes 3 componentes conforme as especificações do seu banco. Por padrão o mysql roda na porta 3306, o nome do banco pode manter.
+mude as propriedades
+username - *****
+password - ***** 
+
+<h3>Criando Banco</h3>
+agora, no WorkBeach, crie um database. No script do database utlize o código:
+Create database aproveitebem;
+use aproveitebem;
+
+<h3>Agora é só rodar a aplicação</h3>
 
 **Tipo: Aplicação Web** 
 
