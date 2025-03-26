@@ -1,45 +1,41 @@
 package Api.controller;
 
-import Api.model.CarrinhoDeCompra;
 import Api.model.ItemLista;
-import Api.model.Produto;
-import Api.repository.CarrinhoDeCompraRepository;
 import Api.service.CarrinhoDeCompraService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
-@Controller
-@RequestMapping(path = "CarrinhoDeCompras")
+@RestController
+@RequestMapping("/usuarios/{usuarioId}/carrinho")
 public class CarrinhoDeCompraController {
 
-    private CarrinhoDeCompraService carrinhoService;
+    private final CarrinhoDeCompraService carrinhoService;
 
     public CarrinhoDeCompraController(CarrinhoDeCompraService carrinhoService) {
         this.carrinhoService = carrinhoService;
     }
 
-    @PostMapping("/{carrinhoId}/adicionar-item")
-    public ResponseEntity<CarrinhoDeCompra> adicionarItem(
-            @PathVariable Long carrinhoId,
-            @RequestBody ItemLista itemRequest) {
-        return ResponseEntity.ok(carrinhoService.adicionarItem(carrinhoId, itemRequest));
+    @GetMapping("/produtos")
+    public ResponseEntity<List<ItemLista>> listarItensPorUsuario(
+            @PathVariable Long usuarioId) {
+        return ResponseEntity.ok(carrinhoService.listarItensPorUsuario(usuarioId));
     }
 
-    @DeleteMapping("/{carrinhoId}/remover-item/{itemId}")
-    public ResponseEntity<Void> removerItem(
-            @PathVariable Long carrinhoId,
+    @PostMapping("/produtos")
+    public ResponseEntity<ItemLista> adicionarItemPorUsuario(
+            @PathVariable Long usuarioId,
+            @RequestBody ItemLista itemRequest) {
+        return ResponseEntity.ok(carrinhoService.adicionarItemPorUsuario(usuarioId, itemRequest));
+    }
+
+    @DeleteMapping("/produtos/{itemId}")
+    public ResponseEntity<Void> removerItemPorUsuario(
+            @PathVariable Long usuarioId,
             @PathVariable Long itemId) {
-        carrinhoService.removerItem(carrinhoId, itemId);
+        carrinhoService.removerItemPorUsuario(usuarioId, itemId);
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("/{carrinhoId}/itens")
-    public ResponseEntity<List<ItemLista>> listarItens(@PathVariable Long carrinhoId) {
-        return ResponseEntity.ok(carrinhoService.listarItens(carrinhoId));
-    }
 }
-

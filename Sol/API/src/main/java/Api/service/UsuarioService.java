@@ -17,12 +17,15 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final CategoriaService categoriaService;
 
     public UsuarioService(UsuarioRepository usuarioRepository,
-                          BCryptPasswordEncoder passwordEncoder) {
+                          BCryptPasswordEncoder passwordEncoder, CategoriaService categoriaService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.categoriaService = categoriaService;
           }
+
 
 
     public UsuarioResponseDto cadastrar(UsuarioRequestDto usuarioRequestDto) {
@@ -30,6 +33,7 @@ public class UsuarioService {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setCarrinhoDeCompra(new CarrinhoDeCompra(usuario));
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
+        categoriaService.criarCategoriasPadrao(usuarioSalvo.getId());
         return new UsuarioResponseDto(usuarioSalvo);
     }
 

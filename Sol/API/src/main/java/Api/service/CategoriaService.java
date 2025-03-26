@@ -7,6 +7,7 @@ import Api.repository.CategoriaRepository;
 import Api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,19 @@ public class CategoriaService {
             UsuarioRepository usuarioRepository) {
         this.categoriaRepository = categoriaRepository;
         this.usuarioRepository = usuarioRepository;
+    }
+
+
+    public void criarCategoriasPadrao(Long usuarioId) {
+        List<Categoria> categoriasPadrao = Arrays.asList(
+                new Categoria("Laticínios"),
+                new Categoria("Carnes"),
+                new Categoria("Bebidas"),
+                new Categoria("Frutas"),
+                new Categoria("Vegetais")
+        );
+
+        categoriasPadrao.forEach(categoria -> this.cadastrar(usuarioId, categoria));
     }
 
     public Categoria cadastrar(Long usuarioId, Categoria categoria) {
@@ -50,7 +64,6 @@ public class CategoriaService {
     public Categoria editar(Long id, Categoria categoriaAtualizada) {
         Categoria categoria = buscarPeloId(id);
         categoria.setNome(categoriaAtualizada.getNome());
-        categoria.setFormaDeArmazenar(categoriaAtualizada.getFormaDeArmazenar());
         return categoriaRepository.save(categoria);
     }
 
