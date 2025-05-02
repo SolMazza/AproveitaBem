@@ -78,6 +78,10 @@ public class Usuario {
         return categorias;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }

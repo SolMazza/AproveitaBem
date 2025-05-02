@@ -42,29 +42,32 @@ public class CarrinhoDeCompraService {
         return savedItem;
     }
 
-    public void removerItemPorUsuario(Long usuarioId, Long itemId) {
-        CarrinhoDeCompra carrinho = getCarrinhoByUsuarioId(usuarioId);
-
+    public void removerItem(Long carrinhoId, Long itemId) {
+        CarrinhoDeCompra carrinho = carrinhoRepo.findById(carrinhoId)
+                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+        boolean itemExiste = carrinho.getItens().stream()
+                .anyMatch(item -> item.getId().equals(itemId));
+        if (!itemExiste) {
+            throw new RuntimeException("Item não encontrado no carrinho");
+        }
         carrinho.getItens().removeIf(item -> item.getId().equals(itemId));
         carrinhoRepo.save(carrinho);
-
         itemRepo.deleteById(itemId);
     }
-
-    public List<ItemLista> listarItensPorUsuario(Long usuarioId) {
-        CarrinhoDeCompra carrinho = getCarrinhoByUsuarioId(usuarioId);
-        return carrinho.getItens();
+    public List<ItemLista> listarItens(Long carrinhoId) {
+        Optional<CarrinhoDeCompra> carrinho = carrinhoRepo.findById(carrinhoId);
+        return carrinho.get().getItens();
     }
 
-    private CarrinhoDeCompra getCarrinhoByUsuarioId(Long usuarioId) {
-        Usuario usuario = usuarioRepo.findById(usuarioId)
+    public CarrinhoDeCompra getCarrinhoByUsuarioEmail(String email) {
+        Usuario usuario = usuarioRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         return carrinhoRepo.findByUsuario(usuario)
                 .orElseThrow(() -> new RuntimeException("Carrinho não encontrado para este usuário"));
     }
 
-    private CarrinhoDeCompra pegarOuCriarCarrinhoPeloUsuario(Long usuarioId) {
+    public CarrinhoDeCompra pegarOuCriarCarrinhoPeloUsuario(Long usuarioId) {
         Usuario usuario = usuarioRepo.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 

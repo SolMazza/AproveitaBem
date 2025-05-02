@@ -10,6 +10,7 @@ import Api.repository.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -18,12 +19,14 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final CategoriaService categoriaService;
+    private final PrateleiraRepository prateleiraRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository,
+    public UsuarioService(UsuarioRepository usuarioRepository,  PrateleiraRepository prateleiraRepository,
                           BCryptPasswordEncoder passwordEncoder, CategoriaService categoriaService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.categoriaService = categoriaService;
+        this.prateleiraRepository = prateleiraRepository;
           }
 
 
@@ -40,16 +43,15 @@ public class UsuarioService {
 
     public List<Prateleira> buscarTodasPrateleiras(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        List<Prateleira> listaPrateleiras = usuario.getPrateleiras();
-
-        return listaPrateleiras;
+        List<Prateleira> prateleiras = prateleiraRepository.findByUsuario(usuario);
+        return prateleiras != null ? prateleiras : Collections.emptyList();
     }
 
     public Usuario autenticar(String email) {
         return usuarioRepository.findByEmail(email)
-                .orElse(null);
+                .orElseThrow(() -> new RegistroNaoEncontrado("Usuário não encontrado"));
     }
 
     public UsuarioResponseDto busca(String email) {

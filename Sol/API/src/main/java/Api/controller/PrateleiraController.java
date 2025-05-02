@@ -1,9 +1,9 @@
 package Api.controller;
 
 import Api.model.*;
+import Api.repository.UsuarioRepository;
 import Api.service.PrateleiraService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,16 +14,19 @@ import java.util.List;
 @RequestMapping("/prateleiras")
 public class PrateleiraController {
     private PrateleiraService prateleiraService;
+    private UsuarioRepository usuarioRepository;
 
-    public PrateleiraController(PrateleiraService prateleiraService) {
+    public PrateleiraController(PrateleiraService prateleiraService, UsuarioRepository usuarioRepository) {
         this.prateleiraService = prateleiraService;
+        this.usuarioRepository = usuarioRepository;
     }
-
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Prateleira> cadastrar(
-            @AuthenticationPrincipal Usuario usuario,
+            @RequestParam String email,
             @RequestBody Prateleira prateleira) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         return ResponseEntity.ok(prateleiraService.cadastrar(usuario.getId(), prateleira));
     }
 
@@ -33,6 +36,12 @@ public class PrateleiraController {
     public ResponseEntity<Prateleira> adicionarProduto(
             @PathVariable Long prateleiraId,
             @PathVariable Long produtoId) {
+
+        // Verificação adicional
+        if (prateleiraId == null || produtoId == null) {
+            throw new IllegalArgumentException("IDs não podem ser nulos");
+        }
+
         Prateleira prateleira = prateleiraService.adicionarProduto(prateleiraId, produtoId);
         return ResponseEntity.ok(prateleira);
     }
@@ -50,6 +59,7 @@ public class PrateleiraController {
         List<Produto> produtos = prateleiraService.buscarTodosProdutos(prateleiraId);
         return ResponseEntity.ok(produtos);
     }
+
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {

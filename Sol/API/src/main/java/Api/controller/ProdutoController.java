@@ -39,23 +39,19 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoService.listarPorCategoria(categoriaId));
     }
 
-    // Rotas protegidas (requerem App-Key)
     @PostMapping
-    public ResponseEntity<Produto> adicionar(@RequestHeader("App-Key") String appKey,
-                                             @RequestBody Produto produto) {
+    public ResponseEntity<Produto> adicionar(@RequestBody Produto produto) {
         return ResponseEntity.ok(produtoService.adicionar(produto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> editar(@RequestHeader("App-Key") String appKey,
-                                          @PathVariable Long id,
+    public ResponseEntity<Produto> editar(@PathVariable Long id,
                                           @RequestBody Produto produto) {
         return ResponseEntity.ok(produtoService.editar(id, produto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@RequestHeader("App-Key") String appKey,
-                                        @PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         produtoService.deletarPeloId(id);
         return ResponseEntity.noContent().build();
     }

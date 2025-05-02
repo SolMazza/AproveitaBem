@@ -29,8 +29,8 @@ public class CategoriaController {
 
     @GetMapping("/minhas-categorias")
     public ResponseEntity<List<Categoria>> listarMinhasCategorias(
-            @AuthenticationPrincipal Usuario usuario) {
-        return ResponseEntity.ok(categoriaService.listarPorUsuario(usuario.getId()));
+            @RequestParam String email) {
+        return ResponseEntity.ok(categoriaService.listarPorUsuarioEmail(email));
     }
 
     @GetMapping("/{id}")

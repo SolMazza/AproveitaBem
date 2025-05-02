@@ -1,16 +1,16 @@
 package Api.controller;
 
+import Api.model.CarrinhoDeCompra;
 import Api.model.ItemLista;
 import Api.model.Usuario;
 import Api.repository.UsuarioRepository;
 import Api.service.CarrinhoDeCompraService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -26,32 +26,56 @@ public class CarrinhoDeCompraController {
     }
 
     @GetMapping("/itens")
-    public ResponseEntity<List<ItemLista>> listarItens(@RequestHeader("App-Key") String appKey,
-                                                       @RequestParam String email) {
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        return ResponseEntity.ok(carrinhoService.listarItensPorUsuario(usuario.getId()));
+    public ResponseEntity<List<ItemLista>> listarItens(@RequestParam Long carrinhoId) {
+        return ResponseEntity.ok(carrinhoService.listarItens(carrinhoId));
+    }
+    @GetMapping("/")
+    public ResponseEntity<Map<String, Object>> carrinhoCompra(@RequestParam String email) {
+        CarrinhoDeCompra carrinho = carrinhoService.getCarrinhoByUsuarioEmail(email);
+
+        return ResponseEntity.ok(Map.of(
+                "id", carrinho.getId(),
+                "itens", carrinho.getItens()
+        ));
     }
 
+
+
     @PostMapping("/itens")
-    public ResponseEntity<ItemLista> adicionarItem(@RequestHeader("App-Key") String appKey,
-                                                   @RequestParam String email,
-                                                   @RequestBody @Valid ItemLista itemRequest) {
+    public ResponseEntity<Map<String, Object>> adicionarItem(@RequestParam String email,
+                                                             @RequestBody @Valid ItemLista itemRequest) {
         if (itemRequest.getQuantidade() <= 0) {
             return ResponseEntity.badRequest().build();
         }
+
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        return ResponseEntity.ok(carrinhoService.adicionarItemPorUsuario(usuario.getId(), itemRequest));
+
+        ItemLista itemSalvo = carrinhoService.adicionarItemPorUsuario(usuario.getId(), itemRequest);
+
+        return ResponseEntity.ok(Map.of(
+                "id", itemSalvo.getId(),
+                "nome", itemSalvo.getNome(),
+                "quantidade", itemSalvo.getQuantidade()
+        ));
     }
 
-    @DeleteMapping("/itens/{itemId}")
-    public ResponseEntity<Void> removerItem(@RequestHeader("App-Key") String appKey,
-                                            @RequestParam String email,
-                                            @PathVariable Long itemId) {
+    @PostMapping("/criar")
+    public ResponseEntity<CarrinhoDeCompra> criarCarrinho(@RequestParam String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        carrinhoService.removerItemPorUsuario(usuario.getId(), itemId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(carrinhoService.pegarOuCriarCarrinhoPeloUsuario(usuario.getId()));
+    }
+
+
+    @DeleteMapping("/itens/{itemId}")
+    public ResponseEntity<Void> removerItem(@RequestParam Long carrinhoId,
+                                            @PathVariable Long itemId) {
+        try {
+            carrinhoService.removerItem(carrinhoId, itemId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

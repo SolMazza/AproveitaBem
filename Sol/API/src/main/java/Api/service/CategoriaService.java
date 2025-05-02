@@ -67,6 +67,12 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
+    public List<Categoria> listarPorUsuarioEmail(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RegistroNaoEncontrado("Usuário não encontrado"));
+        return categoriaRepository.findByUsuarioId(usuario.getId());
+    }
+
     public void deletarPeloId(Long id) {
         categoriaRepository.deleteById(id);
     }

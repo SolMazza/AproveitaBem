@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -47,27 +48,35 @@ UsuarioController {
 
 
     @GetMapping("/me")
-    public ResponseEntity<UsuarioResponseDto> getUsuarioLogado(@RequestHeader("App-Key") String appKey,
-                                                               @RequestParam String email) {
+    public ResponseEntity<UsuarioResponseDto> getUsuarioLogado(@RequestParam String email) {
         return ResponseEntity.ok(usuarioService.busca(email));
     }
 
     @GetMapping("/{email}/prateleiras")
-    public ResponseEntity<List<Prateleira>> buscarPrateleiras(@RequestHeader("App-Key") String appKey,
-                                                              @PathVariable String email) {
-        return ResponseEntity.ok(usuarioService.buscarTodasPrateleiras(email));
+    public ResponseEntity<List<Prateleira>> buscarPrateleiras(@PathVariable String email) {
+        try {
+            List<Prateleira> prateleiras = usuarioService.buscarTodasPrateleiras(email);
+
+            if (prateleiras == null) {
+                prateleiras = Collections.emptyList();
+            }
+
+            return ResponseEntity.ok(prateleiras);
+        } catch (Exception e) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
     }
 
+
+
     @PutMapping
-    public ResponseEntity<Usuario> editar(@RequestHeader("App-Key") String appKey,
-                                          @RequestParam String email,
+    public ResponseEntity<Usuario> editar(@RequestParam String email,
                                           @RequestBody UsuarioRequestDto usuarioRequestDto) {
         return ResponseEntity.ok(usuarioService.editar(email, usuarioRequestDto));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deletar(@RequestHeader("App-Key") String appKey,
-                                          @RequestParam String email) {
+    public ResponseEntity<String> deletar(@RequestParam String email) {
         usuarioService.deletar(email);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }
